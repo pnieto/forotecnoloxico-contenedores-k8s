@@ -1,5 +1,7 @@
 # forotecnoloxico-contenedores-k8s
 
+## Demo Docker
+
 Lanzar contenedor debian 9:
 ```
 docker run -it debian:9 bash
@@ -10,14 +12,16 @@ Lanzar contenedor Windows:
 docker run mcr.microsoft.com/windows/servercore:ltsc2022
 ```
 
-Lanzar cluster con Minikube:
+Crear imagen de echo service:
 ```
-minikube start --nodes 3
+docker build -t pnieto/echo:v1 .
 ```
 
-Obtener nodos cluster:
+## Prueba mononodo
+
+Lanzar cluster con Minikube:
 ```
-kubectl get nodes
+minikube start
 ```
 
 Despligue addons:
@@ -25,25 +29,48 @@ Despligue addons:
 minikube addons enable ingress
 minikube addons enable ingress-dns
 ```
-Agregar configuración dominio *.test (https://minikube.sigs.k8s.io/docs/handbook/addons/ingress-dns/):
-```
-export KUBE_EDITOR="emacs" 
-```
-kubectl edit configmap coredns -n kube-system
-```
-    test:53 {
-            errors
-            cache 30
-            forward . 192.168.49.2
-    }
-```
+
 Cargar deployments:
 ```
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
 kubectl apply -f ingress.yaml
 ```
+
 Actualizar deployment:
 ```
-kubectl rollout restart deployment.v1.apps/echo
+kubectl apply -f deployment.yaml
+kubectl rollout status deployment.v1.apps/echo
 ```
+
+Rollback:
+```
+kubectl rollout undo deployment.v1.apps/echo
+```
+
+## Prueba multinodo
+```
+minikube start --nodes 3 -p multinode
+```
+
+Obtener nodos cluster:
+```
+kubectl get nodes
+```
+
+```
+minikube ip -p multinode
+```
+
+Cargar deployments:
+```
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+```
+
+Borrar nodo:
+```
+kubectl delete node minikube-m03
+docker stop minikube-m03
+```
+

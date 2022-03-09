@@ -1,23 +1,26 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: echo
+  name: hello
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: echo
+      app: hello
   template:
     metadata:
       labels:
-        app: echo
+        app: hello
     spec:
       containers:
-      - name: echo
-        image: pnieto/echo:v1
+      - name: hello-from
+        image: pbitty/hello-from:latest
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
         ports:
-        - containerPort: 8080
+          - name: http
+            containerPort: 80
+      terminationGracePeriodSeconds: 1
