@@ -1,0 +1,2 @@
+Upgrade deployment:
+kubectl rollout restart deployment.v1.apps/echo
