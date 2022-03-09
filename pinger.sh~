@@ -1,9 +1,0 @@
-#!/bin/bash
-
-
-while :
-do
-    echo "Press [CTRL+C] to stop.."
-    curl -k https://echo.test
-    sleep 1
-done

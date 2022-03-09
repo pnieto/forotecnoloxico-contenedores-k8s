@@ -44,7 +44,7 @@ def serve(host='0.0.0.0', port=3246):
 
             print(' - '.join([client_address[0], request_time, request['header']['request-line']]))
             
-            raw_decoded = request_time + " - v2"
+            raw_decoded = request_time + " - v1"
             response = "HTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\n\n{}\n".format(raw_decoded)
             connection.sendall(response.encode())
             connection.close()

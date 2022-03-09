@@ -28,7 +28,9 @@ kubectl edit configmap coredns -n kube-system
     }
 
 Cargar deployments:
-
 kubectl apply -f deployment.yaml
 kubectl apply -f service.yaml
 kubectl apply -f ingress.yaml
+
+Actualizar deployment:
+kubectl rollout restart deployment.v1.apps/echo
